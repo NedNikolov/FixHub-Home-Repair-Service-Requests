@@ -16,6 +16,38 @@ const serviceCards = [
   },
 ];
 
+const valueCards = [
+  {
+    icon: 'bi-person-check',
+    title: 'Trusted Professionals',
+    description: 'Connect with experienced repair specialists who bring dependable service to every job.',
+  },
+  {
+    icon: 'bi-lightning-charge-fill',
+    title: 'Fast Response',
+    description: 'Move from request to action quickly with a platform designed for urgent home issues.',
+  },
+  {
+    icon: 'bi-shield-lock-fill',
+    title: 'Secure Platform',
+    description: 'Keep requests and customer details protected with a clean, reliable digital flow.',
+  },
+  {
+    icon: 'bi-camera-fill',
+    title: 'Photo Uploads',
+    description: 'Share visual details with your request so repairs can be diagnosed more accurately.',
+  },
+];
+
+const popularServices = [
+  { icon: 'bi-lightning-charge', title: 'Electrical' },
+  { icon: 'bi-droplet-fill', title: 'Plumbing' },
+  { icon: 'bi-brush-fill', title: 'Painting' },
+  { icon: 'bi-house-gear-fill', title: 'Renovation' },
+  { icon: 'bi-snow2', title: 'HVAC' },
+  { icon: 'bi-window', title: 'Windows & Doors' },
+];
+
 export function renderHomePage() {
   const cardsMarkup = serviceCards
     .map(
@@ -25,6 +57,37 @@ export function renderHomePage() {
             <div class="service-pill mb-3"><i class="bi ${card.icon}"></i> Service</div>
             <h2 class="h4 fw-bold">${card.title}</h2>
             <p class="text-secondary mb-0">${card.description}</p>
+          </article>
+        </div>
+      `,
+    )
+    .join('');
+
+  const valueCardsMarkup = valueCards
+    .map(
+      (card) => `
+        <div class="col-md-6 col-xl-3">
+          <article class="feature-card h-100 hover-lift">
+            <div class="card-icon mb-3"><i class="bi ${card.icon}"></i></div>
+            <h2 class="h4 fw-bold">${card.title}</h2>
+            <p class="text-secondary mb-0">${card.description}</p>
+          </article>
+        </div>
+      `,
+    )
+    .join('');
+
+  const popularServicesMarkup = popularServices
+    .map(
+      (service) => `
+        <div class="col-sm-6 col-lg-4">
+          <article class="feature-card service-card h-100 hover-lift">
+            <div class="service-card-top">
+              <div class="card-icon mb-3"><i class="bi ${service.icon}"></i></div>
+              <h3 class="h4 fw-bold mb-0">${service.title}</h3>
+            </div>
+            <p class="text-secondary mb-4">Explore tailored repair and maintenance support for this service category.</p>
+            <a class="btn btn-outline-primary rounded-pill px-4 mt-auto align-self-start" href="#contact">Learn More</a>
           </article>
         </div>
       `,
@@ -77,6 +140,30 @@ export function renderHomePage() {
               </article>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-5" id="why-choose">
+      <div class="container">
+        <div class="section-title text-center text-lg-start">
+          <span class="eyebrow">Why Choose FixHub</span>
+          <h2 class="h1 fw-bold mt-2 mb-0">Why Choose FixHub</h2>
+        </div>
+        <div class="row g-4">
+          ${valueCardsMarkup}
+        </div>
+      </div>
+    </section>
+
+    <section class="py-5" id="popular-services">
+      <div class="container">
+        <div class="section-title text-center text-lg-start">
+          <span class="eyebrow">Popular Services</span>
+          <h2 class="h1 fw-bold mt-2 mb-0">Popular Services</h2>
+        </div>
+        <div class="row g-4">
+          ${popularServicesMarkup}
         </div>
       </div>
     </section>
