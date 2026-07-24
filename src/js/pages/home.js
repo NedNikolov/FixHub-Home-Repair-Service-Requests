@@ -48,6 +48,32 @@ const popularServices = [
   { icon: 'bi-window', title: 'Windows & Doors' },
 ];
 
+const howItWorksSteps = [
+  { icon: 'bi-person-plus-fill', title: 'Create Account' },
+  { icon: 'bi-journal-plus', title: 'Submit Request' },
+  { icon: 'bi-cloud-upload-fill', title: 'Upload Photos' },
+  { icon: 'bi-person-badge-fill', title: 'Technician Review' },
+  { icon: 'bi-check2-circle', title: 'Repair Completed' },
+];
+
+const footerLinks = [
+  { label: 'Home', href: '#home' },
+  { label: 'Services', href: '#services' },
+  { label: 'About', href: '#about' },
+  { label: 'Contact', href: '#contact' },
+];
+
+const legalLinks = [
+  { label: 'Privacy Policy', href: '#privacy-policy' },
+  { label: 'Terms of Service', href: '#terms-of-service' },
+];
+
+const socialLinks = [
+  { label: 'GitHub', href: 'https://github.com', icon: 'bi-github' },
+  { label: 'Facebook', href: 'https://facebook.com', icon: 'bi-facebook' },
+  { label: 'LinkedIn', href: 'https://linkedin.com', icon: 'bi-linkedin' },
+];
+
 export function renderHomePage() {
   const cardsMarkup = serviceCards
     .map(
@@ -90,6 +116,47 @@ export function renderHomePage() {
             <a class="btn btn-outline-primary rounded-pill px-4 mt-auto align-self-start" href="#contact">Learn More</a>
           </article>
         </div>
+      `,
+    )
+    .join('');
+
+  const howItWorksMarkup = howItWorksSteps
+    .map(
+      (step, index) => `
+        <div class="col-12 col-lg">
+          <article class="feature-card step-card h-100 hover-lift">
+            <div class="step-badge mb-3">Step ${index + 1}</div>
+            <div class="card-icon mb-3"><i class="bi ${step.icon}"></i></div>
+            <h3 class="h4 fw-bold mb-0">${step.title}</h3>
+            ${index < howItWorksSteps.length - 1 ? '<div class="step-connector d-none d-lg-flex"><i class="bi bi-arrow-down-short"></i></div>' : ''}
+          </article>
+        </div>
+      `,
+    )
+    .join('');
+
+  const footerQuickLinks = footerLinks
+    .map(
+      (link) => `
+        <li><a class="footer-link" href="${link.href}">${link.label}</a></li>
+      `,
+    )
+    .join('');
+
+  const footerLegalLinks = legalLinks
+    .map(
+      (link) => `
+        <li><a class="footer-link" href="${link.href}">${link.label}</a></li>
+      `,
+    )
+    .join('');
+
+  const footerSocialLinks = socialLinks
+    .map(
+      (link) => `
+        <a class="social-link" href="${link.href}" aria-label="${link.label}" target="_blank" rel="noreferrer">
+          <i class="bi ${link.icon}"></i>
+        </a>
       `,
     )
     .join('');
@@ -208,5 +275,55 @@ export function renderHomePage() {
         </div>
       </div>
     </section>
+
+    <section class="py-5" id="how-it-works">
+      <div class="container">
+        <div class="section-title text-center">
+          <span class="eyebrow">How It Works</span>
+          <h2 class="h1 fw-bold mt-2 mb-0">How It Works</h2>
+        </div>
+        <div class="row g-4 step-flow align-items-stretch">
+          ${howItWorksMarkup}
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="row g-4 g-lg-5">
+          <div class="col-lg-4">
+            <a class="footer-brand d-inline-flex align-items-center gap-2 text-decoration-none mb-3" href="#home">
+              <span class="brand-badge"><i class="bi bi-hammer"></i></span>
+              <span class="footer-brand-text">FixHub</span>
+            </a>
+            <p class="footer-description mb-0">
+              A modern home repair platform built to help homeowners create requests, track progress, and complete repairs with confidence.
+            </p>
+          </div>
+
+          <div class="col-6 col-lg-2">
+            <h3 class="footer-heading">Quick Links</h3>
+            <ul class="list-unstyled footer-list mb-0">
+              ${footerQuickLinks}
+            </ul>
+          </div>
+
+          <div class="col-6 col-lg-2">
+            <h3 class="footer-heading">Legal</h3>
+            <ul class="list-unstyled footer-list mb-0">
+              ${footerLegalLinks}
+            </ul>
+          </div>
+
+          <div class="col-lg-4">
+            <h3 class="footer-heading">Social</h3>
+            <div class="d-flex flex-wrap gap-3 mb-4">
+              ${footerSocialLinks}
+            </div>
+            <p class="footer-copyright mb-0">© 2026 FixHub</p>
+          </div>
+        </div>
+      </div>
+    </footer>
   `;
 }
