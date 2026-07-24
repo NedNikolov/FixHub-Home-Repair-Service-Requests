@@ -68,13 +68,13 @@
           </article>
         </div>
       `).join(""),ie=rn.map((O,V)=>`
-        <div class="col-12 col-lg">
+        <div class="col-12 col-lg step-col">
           <article class="feature-card step-card h-100 hover-lift">
             <div class="step-badge mb-3">Step ${V+1}</div>
             <div class="card-icon mb-3"><i class="bi ${O.icon}"></i></div>
             <h3 class="h4 fw-bold mb-0">${O.title}</h3>
-            ${V<rn.length-1?'<div class="step-connector d-none d-lg-flex"><i class="bi bi-arrow-down-short"></i></div>':""}
           </article>
+          ${V<rn.length-1?'<div class="step-connector d-none d-lg-flex"><i class="bi bi-arrow-right-short"></i></div>':""}
         </div>
       `).join(""),$=Rr.map(O=>`
         <li><a class="footer-link" href="${O.href}">${O.label}</a></li>

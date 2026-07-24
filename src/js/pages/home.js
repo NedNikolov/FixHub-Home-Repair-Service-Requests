@@ -123,13 +123,13 @@ export function renderHomePage() {
   const howItWorksMarkup = howItWorksSteps
     .map(
       (step, index) => `
-        <div class="col-12 col-lg">
+        <div class="col-12 col-lg step-col">
           <article class="feature-card step-card h-100 hover-lift">
             <div class="step-badge mb-3">Step ${index + 1}</div>
             <div class="card-icon mb-3"><i class="bi ${step.icon}"></i></div>
             <h3 class="h4 fw-bold mb-0">${step.title}</h3>
-            ${index < howItWorksSteps.length - 1 ? '<div class="step-connector d-none d-lg-flex"><i class="bi bi-arrow-down-short"></i></div>' : ''}
           </article>
+          ${index < howItWorksSteps.length - 1 ? '<div class="step-connector d-none d-lg-flex"><i class="bi bi-arrow-right-short"></i></div>' : ''}
         </div>
       `,
     )
