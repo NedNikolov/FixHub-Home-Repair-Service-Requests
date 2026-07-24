@@ -33,48 +33,48 @@ export function renderHomePage() {
 
   return `
     <section class="hero" id="home">
-      <div class="container">
-        <div class="hero-card">
-          <div class="row align-items-center g-4 g-lg-5">
-            <div class="col-lg-7">
-              <span class="eyebrow">Home Repair & Service Requests</span>
-              <h1 class="hero-title fw-bold">FixHub keeps home repairs simple, fast, and organized.</h1>
-              <p class="hero-lead mb-4">
-                Request home repair services, track needed work, and manage the first step of your service journey in one clean interface.
-              </p>
-              <div class="d-flex flex-wrap gap-3">
-                <a class="btn btn-dark btn-lg rounded-pill px-4" href="#contact">Request service</a>
-                <a class="btn btn-outline-dark btn-lg rounded-pill px-4" href="#services">See services</a>
-              </div>
-              <div class="row g-3 metric-grid">
-                <div class="col-12 col-sm-4">
-                  <div class="metric">
-                    <span class="metric-value">24/7</span>
-                    <span class="metric-label">Support window</span>
-                  </div>
-                </div>
-                <div class="col-12 col-sm-4">
-                  <div class="metric">
-                    <span class="metric-value">Fast</span>
-                    <span class="metric-label">Quote turnaround</span>
-                  </div>
-                </div>
-                <div class="col-12 col-sm-4">
-                  <div class="metric">
-                    <span class="metric-value">Clear</span>
-                    <span class="metric-label">Service requests</span>
-                  </div>
-                </div>
-              </div>
+      <div class="container hero-container">
+        <div class="row align-items-center g-4 g-xl-5">
+          <div class="col-lg-7">
+            <span class="eyebrow">Trusted Home Repair Platform</span>
+            <h1 class="hero-title fw-bold">Need Something Repaired?</h1>
+            <p class="hero-lead mb-4">
+              FixHub helps homeowners submit repair requests in minutes, connect with the right professionals, and stay updated from request to resolution.
+            </p>
+            <div class="d-flex flex-wrap gap-3">
+              <a class="btn btn-primary btn-lg rounded-pill px-4" href="#contact">Create Request</a>
+              <a class="btn btn-outline-primary btn-lg rounded-pill px-4" href="#about">Learn More</a>
             </div>
-            <div class="col-lg-5">
-              <div class="section-card">
-                <span class="service-pill mb-3"><i class="bi bi-clipboard-check"></i> Today&apos;s focus</span>
-                <h2 class="h3 fw-bold">A lightweight starter with a practical structure.</h2>
-                <p class="text-secondary mb-0">
-                  Bootstrap 5 handles the responsive layout, Bootstrap Icons provide the visual language, and the source tree stays modular for future growth.
-                </p>
-              </div>
+          </div>
+          <div class="col-lg-5">
+            <div class="hero-visual" aria-hidden="true">
+              <article class="visual-card visual-card-primary">
+                <div class="visual-icon-wrap">
+                  <i class="bi bi-house-gear-fill"></i>
+                </div>
+                <h2 class="h4 fw-bold mb-2">Smart Request Flow</h2>
+                <p class="text-secondary mb-0">Submit issues, add details, and keep every repair request organized in one place.</p>
+              </article>
+
+              <article class="visual-card visual-card-floating">
+                <div class="d-flex align-items-center gap-3">
+                  <div class="mini-icon"><i class="bi bi-lightning-charge-fill"></i></div>
+                  <div>
+                    <p class="mini-label mb-1">Urgent jobs</p>
+                    <p class="mini-value mb-0">Fast dispatch support</p>
+                  </div>
+                </div>
+              </article>
+
+              <article class="visual-card visual-card-floating alt">
+                <div class="d-flex align-items-center gap-3">
+                  <div class="mini-icon"><i class="bi bi-shield-check"></i></div>
+                  <div>
+                    <p class="mini-label mb-1">Reliable tracking</p>
+                    <p class="mini-value mb-0">Clear status updates</p>
+                  </div>
+                </div>
+              </article>
             </div>
           </div>
         </div>
