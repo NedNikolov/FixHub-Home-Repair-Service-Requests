@@ -3,6 +3,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../../css/styles.css';
 import { renderNavbar } from '../components/navbar.js';
+import { register as authRegister } from '../services/authService.js';
 
 function renderRegisterForm() {
   return `
@@ -61,7 +62,7 @@ function renderRegisterForm() {
                   <button class="btn btn-primary btn-lg" type="submit">Create account</button>
                 </div>
 
-                <p class="text-center text-secondary mt-3 mb-0">Already have an account? <a href="#login">Login</a></p>
+                <p class="text-center text-secondary mt-3 mb-0">Already have an account? <a href="/login.html">Login</a></p>
               </form>
             </div>
           </div>
@@ -124,29 +125,61 @@ function initFormBehavior() {
       return;
     }
 
-    // At this stage, client-side validation passed.
-    // Do not connect to Supabase yet — placeholder behavior.
-    const submitBtn = form.querySelector('button[type="submit"]');
-    if (submitBtn) {
-      submitBtn.disabled = true;
-      submitBtn.innerText = 'Creating account...';
-    }
+    // At this stage, client-side validation passed. Call auth service.
+    (async () => {
+      clearAlert();
+      const submitBtn = form.querySelector('button[type="submit"]');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerText = 'Creating account...';
+      }
 
-    // Simulate success and reset form state
-    setTimeout(() => {
+      const fullName = document.getElementById('fullName')?.value?.trim();
+      const email = document.getElementById('email')?.value?.trim();
+      const passwordVal = password.value;
+
+      const { data, error, message } = await authRegister(email, passwordVal, { data: { fullName } });
+
       if (submitBtn) {
         submitBtn.disabled = false;
         submitBtn.innerText = 'Create account';
       }
-      form.reset();
-      form.classList.remove('was-validated');
-      alert('Registration simulated — no backend connected.');
-    }, 750);
+
+      if (error) {
+        showAlert(message || (error.message || 'Registration failed'), 'danger');
+        return;
+      }
+
+      showAlert('Account created successfully. Redirecting to login...', 'success');
+      // redirect after short delay
+      setTimeout(() => {
+        window.location.href = '/login.html';
+      }, 1400);
+    })();
   });
+}
+
+function showAlert(message, variant = 'danger') {
+  const form = document.getElementById('registerForm');
+  if (!form) return;
+  clearAlert();
+  const wrapper = document.createElement('div');
+  wrapper.className = `alert alert-${variant} mt-3`;
+  wrapper.setAttribute('role', 'alert');
+  wrapper.innerText = message;
+  form.prepend(wrapper);
+}
+
+function clearAlert() {
+  const form = document.getElementById('registerForm');
+  if (!form) return;
+  const existing = form.querySelector('.alert');
+  if (existing) existing.remove();
 }
 
 const app = document.querySelector('#app');
 if (app) {
+  console.debug('[register] rendering page');
   app.innerHTML = `
     ${renderNavbar()}
     <main>
@@ -154,8 +187,11 @@ if (app) {
     </main>
   `;
 
-  // init behavior after DOM injection
-  initFormBehavior();
+  // attach behavior on next microtask to ensure DOM is fully parsed
+  Promise.resolve().then(() => {
+    console.debug('[register] initializing form behavior');
+    initFormBehavior();
+  });
 }
 
 export { renderRegisterForm };

@@ -43,8 +43,8 @@ export function renderNavbar() {
             </ul>
 
             <div class="d-flex flex-column flex-lg-row gap-2 ms-lg-3">
-              <a class="btn btn-outline-dark rounded-pill px-4" href="#login">Login</a>
-              <a class="btn btn-dark rounded-pill px-4" href="#register">Register</a>
+              <a class="btn btn-outline-dark rounded-pill px-4" href="/login.html">Login</a>
+              <a class="btn btn-dark rounded-pill px-4" href="/register.html">Register</a>
             </div>
           </div>
         </div>

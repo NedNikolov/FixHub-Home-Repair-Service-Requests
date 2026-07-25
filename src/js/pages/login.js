@@ -3,6 +3,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../../css/styles.css';
 import { renderNavbar } from '../components/navbar.js';
+import { login as authLogin } from '../services/authService.js';
 
 function renderLoginForm() {
   return `
@@ -80,27 +81,59 @@ function initLoginBehavior() {
       return;
     }
 
-    const submitBtn = form.querySelector('button[type="submit"]');
-    if (submitBtn) {
-      submitBtn.disabled = true;
-      submitBtn.innerText = 'Logging in...';
-    }
+    (async () => {
+      clearAlert();
+      const submitBtn = form.querySelector('button[type="submit"]');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerText = 'Logging in...';
+      }
 
-    // Simulated login flow (no auth yet)
-    setTimeout(() => {
+      const email = document.getElementById('email')?.value?.trim();
+      const passwordVal = document.getElementById('password')?.value;
+
+      const { data, error, message } = await authLogin(email, passwordVal);
+
       if (submitBtn) {
         submitBtn.disabled = false;
         submitBtn.innerText = 'Login';
       }
-      form.reset();
-      form.classList.remove('was-validated');
-      alert('Login simulated — authentication not implemented yet.');
-    }, 700);
+
+      if (error) {
+        showAlert(message || (error.message || 'Login failed'), 'danger');
+        return;
+      }
+
+      showAlert('Login successful — redirecting...', 'success');
+      // redirect to dashboard
+      setTimeout(() => {
+        window.location.href = '/dashboard.html';
+      }, 800);
+    })();
   });
+}
+
+function showAlert(message, variant = 'danger') {
+  const form = document.getElementById('loginForm');
+  if (!form) return;
+  clearAlert();
+  const wrapper = document.createElement('div');
+  wrapper.className = `alert alert-${variant} mt-3`;
+  wrapper.setAttribute('role', 'alert');
+  wrapper.innerText = message;
+  form.prepend(wrapper);
+}
+
+function clearAlert() {
+  const form = document.getElementById('loginForm');
+  if (!form) return;
+  const existing = form.querySelector('.alert');
+  if (existing) existing.remove();
 }
 
 const app = document.querySelector('#app');
 if (app) {
+  console.debug('[login] rendering page');
   app.innerHTML = `
     ${renderNavbar()}
     <main>
@@ -108,7 +141,11 @@ if (app) {
     </main>
   `;
 
-  initLoginBehavior();
+  // initialize after DOM injection
+  Promise.resolve().then(() => {
+    console.debug('[login] initializing form behavior');
+    initLoginBehavior();
+  });
 }
 
 export { renderLoginForm };
