@@ -3,6 +3,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../../css/styles.css';
 import { renderNavbar } from '../components/navbar.js';
+import { initAuthGuard } from '../utils/authGuard.js';
 import { register as authRegister } from '../services/authService.js';
 
 function renderRegisterForm() {
@@ -191,6 +192,8 @@ if (app) {
   Promise.resolve().then(() => {
     console.debug('[register] initializing form behavior');
     initFormBehavior();
+    // initialize auth guard to update navbar / redirects
+    initAuthGuard().catch(() => {});
   });
 }
 

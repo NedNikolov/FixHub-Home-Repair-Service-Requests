@@ -3,6 +3,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../../css/styles.css';
 import { renderNavbar } from '../components/navbar.js';
+import { initAuthGuard } from '../utils/authGuard.js';
 import { login as authLogin } from '../services/authService.js';
 
 function renderLoginForm() {
@@ -145,6 +146,8 @@ if (app) {
   Promise.resolve().then(() => {
     console.debug('[login] initializing form behavior');
     initLoginBehavior();
+    // update navbar and redirect if user already logged in
+    initAuthGuard().catch(() => {});
   });
 }
 

@@ -4,6 +4,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../../css/styles.css';
 import { renderNavbar } from '../components/navbar.js';
 import { getCurrentUser, getSession, logout } from '../services/authService.js';
+import { initAuthGuard } from '../utils/authGuard.js';
 
 async function renderDashboard() {
   const app = document.querySelector('#app');
@@ -62,4 +63,5 @@ async function renderDashboard() {
   });
 }
 
-renderDashboard();
+// initialize auth guard and then render dashboard content
+Promise.resolve().then(() => initAuthGuard().then(renderDashboard).catch((e) => { console.error(e); renderDashboard(); }));
