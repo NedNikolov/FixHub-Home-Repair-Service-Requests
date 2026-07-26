@@ -44,12 +44,11 @@ export async function uploadRepairRequestImages(files, requestId, userId) {
         return { data: null, error: storageError, message: storageError.message };
       }
 
-      const { data: publicUrlData } = supabase.storage.from(BUCKET_NAME).getPublicUrl(path);
       uploaded.push({
         request_id: requestId,
         user_id: userId,
         storage_path: path,
-        image_url: publicUrlData?.publicUrl || '',
+        image_url: null,
         created_at: new Date().toISOString(),
       });
     }
@@ -58,7 +57,7 @@ export async function uploadRepairRequestImages(files, requestId, userId) {
       return buildError('No images were uploaded.');
     }
 
-    const { data, error } = await supabase.from('repair_request_images').insert(uploaded).select();
+    const { data, error } = await supabase.from('repair_images').insert(uploaded).select();
     if (error) return { data: null, error, message: error.message };
     return { data, error: null, message: null };
   } catch (error) {
@@ -73,7 +72,7 @@ export async function deleteRepairRequestImage(imageId, userId) {
 
   try {
     const { data: imageRows, error: lookupError } = await supabase
-      .from('repair_request_images')
+      .from('repair_images')
       .select('*')
       .eq('id', imageId)
       .eq('user_id', userId)
@@ -85,7 +84,7 @@ export async function deleteRepairRequestImage(imageId, userId) {
       await supabase.storage.from(BUCKET_NAME).remove([imageRows.storage_path]);
     }
 
-    const { data, error } = await supabase.from('repair_request_images').delete().eq('id', imageId).eq('user_id', userId).select();
+    const { data, error } = await supabase.from('repair_images').delete().eq('id', imageId).eq('user_id', userId).select();
     if (error) return { data: null, error, message: error.message };
     return { data, error: null, message: null };
   } catch (error) {

@@ -1,7 +1,7 @@
 import supabase, { isSupabaseConfigured } from './supabase.js';
 
 const TABLE_NAME = 'repair_requests';
-const IMAGES_TABLE_NAME = 'repair_request_images';
+const IMAGES_TABLE_NAME = 'repair_images';
 
 function buildError(message) {
   return { data: null, error: new Error(message), message };
@@ -110,7 +110,15 @@ export async function getRepairRequestImages(requestId, userId) {
       .order('created_at', { ascending: true });
 
     if (error) return { data: null, error, message: error.message };
-    return { data, error: null, message: null };
+
+    const images = await Promise.all(
+      (data || []).map(async (image) => {
+        if (!image.storage_path) return image;
+        const { data: signedUrlData } = await supabase.storage.from('repair-images').createSignedUrl(image.storage_path, 3600);
+        return { ...image, image_url: signedUrlData?.signedUrl || image.image_url };
+      }),
+    );
+    return { data: images, error: null, message: null };
   } catch (error) {
     return { data: null, error, message: error.message };
   }
