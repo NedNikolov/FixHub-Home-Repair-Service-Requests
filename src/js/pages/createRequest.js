@@ -6,6 +6,7 @@ import { renderNavbar } from '../components/navbar.js';
 import { initAuthGuard } from '../utils/authGuard.js';
 import { createRepairRequest } from '../services/requestService.js';
 import { getCurrentUser } from '../services/authService.js';
+import { uploadRepairRequestImages } from '../services/storageService.js';
 
 function renderCreateRequestPage() {
   return `
@@ -67,6 +68,12 @@ function renderCreateRequestPage() {
                       <option value="Cancelled">Cancelled</option>
                     </select>
                   </div>
+                  <div class="col-12">
+                    <label for="images" class="form-label">Images</label>
+                    <input type="file" class="form-control" id="images" accept="image/*" multiple />
+                    <div class="form-text">Choose one or more image files. Only image files are accepted.</div>
+                    <div id="imagePreview" class="row g-3 mt-1"></div>
+                  </div>
                 </div>
 
                 <div class="mt-4 d-flex gap-2">
@@ -110,7 +117,35 @@ async function initCreateRequestPage() {
   `;
 
   const form = document.getElementById('requestForm');
+  const imageInput = document.getElementById('images');
+  const imagePreview = document.getElementById('imagePreview');
   if (!form) return;
+
+  if (imageInput && imagePreview) {
+    imageInput.addEventListener('change', () => {
+      const files = Array.from(imageInput.files || []);
+      if (!files.length) {
+        imagePreview.innerHTML = '<p class="text-secondary small mb-0">No images chosen yet.</p>';
+        return;
+      }
+
+      const previewMarkup = files
+        .map((file) => {
+          const previewUrl = URL.createObjectURL(file);
+          return `
+            <div class="col-6 col-md-4">
+              <div class="border rounded p-2 h-100">
+                <img src="${previewUrl}" alt="Preview" class="img-fluid rounded" style="height: 120px; object-fit: cover; width: 100%;" />
+                <p class="small text-secondary mt-2 mb-0">${file.name}</p>
+              </div>
+            </div>
+          `;
+        })
+        .join('');
+
+      imagePreview.innerHTML = previewMarkup;
+    });
+  }
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -131,17 +166,32 @@ async function initCreateRequestPage() {
       created_at: new Date().toISOString(),
     };
 
-    const { error, message } = await createRepairRequest(payload);
+    const { data, error, message } = await createRepairRequest(payload);
     if (error) {
       showAlert(message || error.message, 'danger');
       return;
     }
 
-    showAlert('Repair request created successfully.', 'success');
+    const createdRequest = Array.isArray(data) ? data[0] : data;
+    const files = Array.from(imageInput?.files || []);
+
+    let uploadMessage = 'Repair request created successfully.';
+    let uploadVariant = 'success';
+
+    if (files.length) {
+      const uploadResult = await uploadRepairRequestImages(files, createdRequest?.id, user.id);
+      if (uploadResult.error) {
+        uploadMessage = uploadResult.message || 'Request created, but one or more images could not be uploaded.';
+        uploadVariant = 'warning';
+      }
+    }
+
+    showAlert(uploadMessage, uploadVariant);
     form.reset();
+    if (imagePreview) imagePreview.innerHTML = '<p class="text-secondary small mb-0">No images chosen yet.</p>';
     setTimeout(() => {
       window.location.href = '/my-requests.html';
-    }, 800);
+    }, 900);
   });
 }
 

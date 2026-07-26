@@ -5,14 +5,45 @@ import '../../css/styles.css';
 import { renderNavbar } from '../components/navbar.js';
 import { initAuthGuard } from '../utils/authGuard.js';
 import { getCurrentUser } from '../services/authService.js';
-import { getRepairRequestById, updateRepairRequest, deleteRepairRequest } from '../services/requestService.js';
+import { getRepairRequestById, updateRepairRequest, deleteRepairRequest, getRepairRequestImages } from '../services/requestService.js';
+import { uploadRepairRequestImages, deleteRepairRequestImage } from '../services/storageService.js';
 
 function getQueryParam(name) {
   const params = new URLSearchParams(window.location.search);
   return params.get(name);
 }
 
-function renderDetailsPage(request, isEditing = false) {
+function renderDetailsPage(request, isEditing = false, images = []) {
+  const imagesMarkup = images.length
+    ? `
+        <div class="mt-4">
+          <h2 class="h6 fw-bold mb-3">Uploaded Images</h2>
+          <div class="row g-3">
+            ${images
+              .map(
+                (image) => `
+                  <div class="col-12 col-md-6">
+                    <div class="border rounded p-2 h-100">
+                      <img src="${image.image_url}" alt="Repair request image" class="img-fluid rounded" style="height: 180px; object-fit: cover; width: 100%;" />
+                      <div class="d-flex justify-content-between align-items-center mt-2">
+                        <span class="small text-secondary">${image.storage_path || 'Image'}</span>
+                        <button class="btn btn-outline-danger btn-sm delete-image-btn" data-id="${image.id}">Delete</button>
+                      </div>
+                    </div>
+                  </div>
+                `,
+              )
+              .join('')}
+          </div>
+        </div>
+      `
+    : `
+        <div class="mt-4">
+          <h2 class="h6 fw-bold mb-2">Uploaded Images</h2>
+          <p class="text-secondary mb-0">No images have been uploaded for this request yet.</p>
+        </div>
+      `;
+
   return `
     <main class="py-5">
       <div class="container">
@@ -92,6 +123,18 @@ function renderDetailsPage(request, isEditing = false) {
                   <dd class="col-sm-8">${request.created_at ? new Date(request.created_at).toLocaleString() : 'Unknown'}</dd>
                 </dl>
               `}
+
+              ${imagesMarkup}
+
+              <div class="mt-4 border-top pt-4">
+                <h2 class="h6 fw-bold mb-2">Upload More Images</h2>
+                <p class="text-secondary small">Select image files to attach to this request.</p>
+                <form id="imageUploadForm" novalidate>
+                  <input type="file" id="imageInput" class="form-control" accept="image/*" multiple />
+                  <div id="imageUploadPreview" class="row g-3 mt-2"></div>
+                  <button class="btn btn-primary mt-3" type="submit">Upload Images</button>
+                </form>
+              </div>
             </div>
           </div>
         </div>
@@ -140,12 +183,78 @@ async function initRequestDetailsPage() {
     return;
   }
 
+  const { data: imagesData } = await getRepairRequestImages(id, user.id);
+
   app.innerHTML = `
     ${renderNavbar()}
-    ${renderDetailsPage(data, isEditing)}
+    ${renderDetailsPage(data, isEditing, imagesData || [])}
   `;
 
   const editForm = document.getElementById('editForm');
+  const imageInput = document.getElementById('imageInput');
+  const imageUploadPreview = document.getElementById('imageUploadPreview');
+
+  if (imageInput && imageUploadPreview) {
+    imageInput.addEventListener('change', () => {
+      const files = Array.from(imageInput.files || []);
+      imageUploadPreview.innerHTML = files.length
+        ? files
+            .map(
+              (file) => `
+                <div class="col-6 col-md-4">
+                  <div class="border rounded p-2">
+                    <img src="${URL.createObjectURL(file)}" alt="Preview" class="img-fluid rounded" style="height: 100px; object-fit: cover; width: 100%;" />
+                    <p class="small text-secondary mt-2 mb-0">${file.name}</p>
+                  </div>
+                </div>
+              `,
+            )
+            .join('')
+        : '<p class="text-secondary small mb-0">No images selected yet.</p>';
+    });
+  }
+
+  const imageUploadForm = document.getElementById('imageUploadForm');
+  if (imageUploadForm) {
+    imageUploadForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const files = Array.from(imageInput?.files || []);
+      if (!files.length) {
+        showMessage('Please select at least one image.', 'warning');
+        return;
+      }
+
+      const { error, message } = await uploadRepairRequestImages(files, id, user.id);
+      if (error) {
+        showMessage(message || error.message, 'danger');
+        return;
+      }
+
+      showMessage('Images uploaded successfully.', 'success');
+      imageUploadForm.reset();
+      if (imageUploadPreview) imageUploadPreview.innerHTML = '';
+      window.location.reload();
+    });
+  }
+
+  document.querySelectorAll('.delete-image-btn').forEach((button) => {
+    button.addEventListener('click', async () => {
+      const imageId = button.getAttribute('data-id');
+      if (!imageId) return;
+      const confirmed = window.confirm('Delete this image?');
+      if (!confirmed) return;
+
+      const { error, message } = await deleteRepairRequestImage(imageId, user.id);
+      if (error) {
+        showMessage(message || error.message, 'danger');
+        return;
+      }
+
+      showMessage('Image deleted successfully.', 'success');
+      window.location.reload();
+    });
+  });
+
   if (editForm) {
     editForm.addEventListener('submit', async (event) => {
       event.preventDefault();
