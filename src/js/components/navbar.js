@@ -64,6 +64,7 @@ export function updateNavbarForAuth(user) {
       <li class="nav-item"><a class="nav-link" href="/dashboard.html">Dashboard</a></li>
       <li class="nav-item"><a class="nav-link" href="/my-requests.html">My Requests</a></li>
       <li class="nav-item"><a class="nav-link" href="/create-request.html">Create Request</a></li>
+      <li class="nav-item"><a class="nav-link" href="/admin.html">Admin</a></li>
     `;
 
     authArea.innerHTML = `

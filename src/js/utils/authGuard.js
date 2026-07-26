@@ -45,14 +45,19 @@ function attachLogoutHandler() {
 
 export async function initAuthGuard() {
   const path = window.location.pathname || window.location.href;
-  // Update navbar and attach handlers
   const { authenticated, user } = await isAuthenticated();
   updateNavbarForAuth(user);
-  // attach logout handler if present
   attachLogoutHandler();
 
-  // Protect routes
   if (path.endsWith('/dashboard.html') || path.endsWith('/dashboard')) {
+    if (!authenticated) {
+      window.location.href = '/login.html';
+      return false;
+    }
+    return true;
+  }
+
+  if (path.endsWith('/admin.html') || path.endsWith('/admin')) {
     if (!authenticated) {
       window.location.href = '/login.html';
       return false;

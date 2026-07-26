@@ -39,6 +39,14 @@ const dashboardCards = [
     href: '/dashboard.html#account-settings',
     buttonLabel: 'Open settings',
   },
+  {
+    sectionId: 'admin-panel',
+    icon: 'bi-shield-lock',
+    title: 'Admin Panel',
+    description: 'Review requests, manage statuses, and inspect registered users from one place.',
+    href: '/admin.html',
+    buttonLabel: 'Open admin',
+  },
 ];
 
 function getDisplayName(user) {
