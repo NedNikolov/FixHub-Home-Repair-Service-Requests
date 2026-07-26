@@ -49,7 +49,7 @@ export async function initAuthGuard() {
   updateNavbarForAuth(user);
   attachLogoutHandler();
 
-  if (path.endsWith('/dashboard.html') || path.endsWith('/dashboard')) {
+  if (path.endsWith('/dashboard.html') || path.endsWith('/dashboard') || path.endsWith('/profile.html') || path.endsWith('/profile')) {
     if (!authenticated) {
       window.location.href = '/login.html';
       return false;

@@ -351,6 +351,68 @@ section.py-5 {
   color: var(--fh-muted) !important;
 }
 
+/* Forms and account pages */
+.form-control,
+.form-select,
+.input-group-text {
+  border-color: var(--fh-border);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--fh-primary);
+  box-shadow: 0 0 0 0.2rem rgba(31, 120, 255, 0.15);
+}
+
+.profile-avatar {
+  display: grid;
+  flex: 0 0 auto;
+  width: 5rem;
+  height: 5rem;
+  overflow: hidden;
+  place-items: center;
+  border: 3px solid var(--fh-primary-soft);
+  border-radius: 50%;
+  color: var(--fh-primary-deep);
+  background: var(--fh-primary-soft);
+  font-size: 1.75rem;
+  font-weight: 800;
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.account-details {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.account-details div {
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--fh-border);
+}
+
+.account-details div:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.account-details dt {
+  margin-bottom: 0.25rem;
+  color: var(--fh-muted);
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.account-details dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-weight: 600;
+}
+
 /* Section-specific layouts */
 .step-flow {
   position: relative;
@@ -530,5 +592,10 @@ section.py-5 {
 
   .site-footer {
     padding-top: 2.75rem;
+  }
+
+  .profile-avatar {
+    width: 4rem;
+    height: 4rem;
   }
 }

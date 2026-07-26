@@ -36,6 +36,7 @@ try {
         signOut: async () => err('Supabase not configured'),
         getUser: async () => err('Supabase not configured'),
         getSession: async () => err('Supabase not configured'),
+        updateUser: async () => err('Supabase not configured'),
       },
     };
   }
@@ -47,7 +48,8 @@ try {
       signInWithPassword: async () => ({ error: e }),
       signOut: async () => ({ error: e }),
       getUser: async () => ({ error: e }),
-      getSession: async () => ({ error: e }),
+        getSession: async () => ({ error: e }),
+        updateUser: async () => ({ error: e }),
     },
   };
 }

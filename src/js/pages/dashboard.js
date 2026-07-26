@@ -28,7 +28,7 @@ const dashboardCards = [
     icon: 'bi-person-badge',
     title: 'Profile',
     description: 'Check your personal information and keep your account details up to date.',
-    href: '/dashboard.html#profile',
+    href: '/profile.html',
     buttonLabel: 'Open profile',
   },
   {
@@ -36,7 +36,7 @@ const dashboardCards = [
     icon: 'bi-gear',
     title: 'Account Settings',
     description: 'Manage security preferences, notification settings, and account options.',
-    href: '/dashboard.html#account-settings',
+    href: '/profile.html#security',
     buttonLabel: 'Open settings',
   },
   {

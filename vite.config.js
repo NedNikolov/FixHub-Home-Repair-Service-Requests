@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import fs from 'fs';
+import { resolve } from 'path';
 
 // Load .env.example into process.env when .env is not present so
 // developers who put keys into .env.example for quick testing get a working dev server.
@@ -27,5 +28,22 @@ export default defineConfig(() => {
 		// ignore parsing errors
 	}
 
-	return {};
+	return {
+		build: {
+			target: 'esnext',
+			rollupOptions: {
+				input: {
+					home: resolve(__dirname, 'index.html'),
+					login: resolve(__dirname, 'login.html'),
+					register: resolve(__dirname, 'register.html'),
+					dashboard: resolve(__dirname, 'dashboard.html'),
+					profile: resolve(__dirname, 'profile.html'),
+					myRequests: resolve(__dirname, 'my-requests.html'),
+					createRequest: resolve(__dirname, 'create-request.html'),
+					requestDetails: resolve(__dirname, 'request-details.html'),
+					admin: resolve(__dirname, 'admin.html'),
+				},
+			},
+		},
+	};
 });

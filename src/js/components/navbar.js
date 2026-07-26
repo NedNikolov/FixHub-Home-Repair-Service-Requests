@@ -5,6 +5,8 @@ const navLinks = [
   { label: 'Contact', href: '#contact' },
 ];
 
+let currentUser = null;
+
 export function renderNavbar() {
   const linksMarkup = navLinks
     .map(
@@ -15,6 +17,8 @@ export function renderNavbar() {
       `,
     )
     .join('');
+
+  queueMicrotask(() => updateNavbarForAuth(currentUser));
 
   return `
     <header class="sticky-top">
@@ -54,6 +58,7 @@ export function renderNavbar() {
 }
 
 export function updateNavbarForAuth(user) {
+  currentUser = user || null;
   const navList = document.getElementById('primaryNavList');
   const authArea = document.getElementById('navAuthArea');
   if (!navList || !authArea) return;
@@ -64,6 +69,7 @@ export function updateNavbarForAuth(user) {
       <li class="nav-item"><a class="nav-link" href="/dashboard.html">Dashboard</a></li>
       <li class="nav-item"><a class="nav-link" href="/my-requests.html">My Requests</a></li>
       <li class="nav-item"><a class="nav-link" href="/create-request.html">Create Request</a></li>
+      <li class="nav-item"><a class="nav-link" href="/profile.html">Profile</a></li>
       <li class="nav-item"><a class="nav-link" href="/admin.html">Admin</a></li>
     `;
 
