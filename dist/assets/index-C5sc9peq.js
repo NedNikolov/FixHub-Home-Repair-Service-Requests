@@ -24,7 +24,7 @@
           </button>
 
           <div class="collapse navbar-collapse" id="primaryNav">
-            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1 mb-3 mb-lg-0">
+            <ul id="primaryNavList" class="navbar-nav ms-auto align-items-lg-center gap-lg-1 mb-3 mb-lg-0">
               ${Mr.map(ae=>`
         <li class="nav-item">
           <a class="nav-link" href="${ae.href}">${ae.label}</a>
@@ -32,9 +32,9 @@
       `).join("")}
             </ul>
 
-            <div class="d-flex flex-column flex-lg-row gap-2 ms-lg-3">
-              <a class="btn btn-outline-dark rounded-pill px-4" href="#login">Login</a>
-              <a class="btn btn-dark rounded-pill px-4" href="#register">Register</a>
+            <div id="navAuthArea" class="d-flex flex-column flex-lg-row gap-2 ms-lg-3">
+              <a class="btn btn-outline-dark rounded-pill px-4" href="/login.html">Login</a>
+              <a class="btn btn-dark rounded-pill px-4" href="/register.html">Register</a>
             </div>
           </div>
         </div>

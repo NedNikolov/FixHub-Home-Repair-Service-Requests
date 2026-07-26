@@ -53,12 +53,18 @@ export async function initAuthGuard() {
 
   // Protect routes
   if (path.endsWith('/dashboard.html') || path.endsWith('/dashboard')) {
-    await requireAuth();
+    if (!authenticated) {
+      window.location.href = '/login.html';
+      return false;
+    }
+    return true;
   }
 
   if (path.endsWith('/login.html') || path.endsWith('/register.html')) {
-    await redirectIfAuthenticated();
+    return redirectIfAuthenticated();
   }
+
+  return authenticated;
 }
 
 export default {
