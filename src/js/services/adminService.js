@@ -28,7 +28,7 @@ export async function getAdminStats() {
 
   try {
     const [{ data: usersData, error: usersError }, { data: requestsData, error: requestsError }] = await Promise.all([
-      supabase.from('auth_users').select('id', { count: 'exact' }),
+      supabase.from('profiles').select('id', { count: 'exact' }),
       supabase.from(REQUESTS_TABLE).select('id,status', { count: 'exact' }),
     ]);
 
@@ -84,7 +84,7 @@ export async function getAllUsers() {
   }
 
   try {
-    const { data, error } = await supabase.from('auth_users').select('*').order('created_at', { ascending: false });
+    const { data, error } = await supabase.from('profiles').select('id, full_name, created_at').order('created_at', { ascending: false });
     if (error) return { data: null, error, message: error.message };
     return { data, error: null, message: null };
   } catch (error) {

@@ -1,0 +1,13 @@
+# Dependencies and generated build output
+node_modules/
+dist/
+
+# Local Supabase configuration and secrets
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Tooling files
+*.log
+.DS_Store

@@ -124,7 +124,7 @@ function renderAdminPage({ stats, requests, users }) {
             <table class="table align-middle">
               <thead>
                 <tr>
-                  <th>Email</th>
+                  <th>User</th>
                   <th>Role</th>
                   <th>Created</th>
                 </tr>
@@ -132,7 +132,7 @@ function renderAdminPage({ stats, requests, users }) {
               <tbody>
                 ${users.length ? users.map((user) => `
                   <tr>
-                    <td>${user.email || 'Unknown'}</td>
+                    <td>${user.full_name || user.id || 'Unknown'}</td>
                     <td><span class="badge bg-secondary">${user.role || 'user'}</span></td>
                     <td>${user.created_at ? new Date(user.created_at).toLocaleString() : 'Unknown'}</td>
                   </tr>
