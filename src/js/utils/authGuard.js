@@ -32,11 +32,18 @@ async function redirectIfAuthenticated() {
   return false;
 }
 
+let logoutHandlerAttached = false;
+
 function attachLogoutHandler() {
-  const el = document.getElementById('nav-logout');
-  if (!el) return;
-  el.addEventListener('click', async (e) => {
-    e.preventDefault();
+  if (logoutHandlerAttached) return;
+  logoutHandlerAttached = true;
+
+  document.addEventListener('click', async (event) => {
+    const logoutButton = event.target.closest('#nav-logout');
+    if (!logoutButton) return;
+
+    event.preventDefault();
+    logoutButton.disabled = true;
     await authLogout();
     updateNavbarForAuth(null);
     window.location.href = '/';
