@@ -62,8 +62,8 @@ export function updateNavbarForAuth(user) {
   if (user) {
     navList.innerHTML = `
       <li class="nav-item"><a class="nav-link" href="/dashboard.html">Dashboard</a></li>
-      <li class="nav-item"><a class="nav-link" href="#requests">My Requests</a></li>
-      <li class="nav-item"><a class="nav-link" href="#profile">Profile</a></li>
+      <li class="nav-item"><a class="nav-link" href="/my-requests.html">My Requests</a></li>
+      <li class="nav-item"><a class="nav-link" href="/create-request.html">Create Request</a></li>
     `;
 
     authArea.innerHTML = `

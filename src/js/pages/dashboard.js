@@ -12,7 +12,7 @@ const dashboardCards = [
     icon: 'bi-journal-text',
     title: 'My Repair Requests',
     description: 'Review the status, history, and notes for your submitted repair requests.',
-    href: '/dashboard.html#my-repair-requests',
+    href: '/my-requests.html',
     buttonLabel: 'View requests',
   },
   {
@@ -20,7 +20,7 @@ const dashboardCards = [
     icon: 'bi-plus-circle',
     title: 'Create New Request',
     description: 'Start a new repair request and add details when you are ready.',
-    href: '/dashboard.html#create-new-request',
+    href: '/create-request.html',
     buttonLabel: 'Start request',
   },
   {
